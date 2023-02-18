@@ -1,33 +1,32 @@
 <?php
+  
+    $dbhost = 'localhost';
+    $dbport = '5432';
+    $dbname = 'php_postgre';
+    $dbuser = 'postgres';
+    $dbpassword = 12136270;
 
-// 1- Créez une connexion de base de données au serveur PostgreSQL.
-$dsn = "pgsql:host=localhost;port=5432;dbname=mydatabase";
-$username = "myusername";
-$password = "mypassword";
+    $dbconn = pg_connect("host=$dbhost port=$dbport dbname=$dbname user=$dbuser password=$dbpassword");
 
-try {
-    $dbh = new PDO($dsn, $username, $password);
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-    die();
-}
+    if (!$dbconn) {
+        echo "Could not connect to database.\n";
+    exit;
+    }else{
+        echo "Connected to database.\n";
+    }
 
-// 2- Créez une requête SQL
-$stmt = $dbh->prepare("UPDATE COMPANY SET SALARY = 25000.00 WHERE ID = 1");
-$stmt->execute();
+    $query = "UPDATE COMPANY set SALARY = 25000.00 where ID=1;";
 
-// 3- Exécuter une requête pour mettre à jour la table
-$stmt = $dbh->prepare("SELECT * FROM COMPANY WHERE ID = 1");
-$stmt->execute();
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = pg_query($dbconn, $query);
 
-echo "ID: " . $row['ID'] . "\n";
-echo "NAME: " . $row['NAME'] . "\n";
-echo "AGE: " . $row['AGE'] . "\n";
-echo "ADDRESS: " . $row['ADDRESS'] . "\n";
-echo "SALARY: " . $row['SALARY'] . "\n";
+    if (!$result) {
+       echo "Query failed.\n";
+       
+    exit;
+    }else{
+        echo "Query succeeded.\n";
+        
+    }
 
-// 4- Fermez la connexion à la base de données.
-$dbh = null;
-
+    pg_close($dbconn);
 ?>
