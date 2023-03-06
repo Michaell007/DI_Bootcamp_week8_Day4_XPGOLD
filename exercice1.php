@@ -2,7 +2,7 @@
   
     $dbhost = 'localhost';
     $dbport = '5432';
-    $dbname = 'php_postgre';
+    $dbname = 'php_postgre'; 
     $dbuser = 'postgres';
     $dbpassword = 12136270;
 
